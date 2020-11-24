@@ -1,0 +1,42 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    container_name: cache
+    expose:
+      - 6379
+  app-set:
+    build: ./
+    volumes:
+      - ./:/var/www/app
+    links:
+      - redis
+    expose:
+      - 3000
+    environment:
+      - REDIS_URL=redis://cache
+      - NODE_ENV=development
+      - PORT=3000
+    command:
+      sh -c 'npm i && node server-set.js'
+  app-get:
+    build: ./
+    volumes:
+      - ./:/var/www/app
+    links:
+      - redis
+    expose:
+      - 3000
+    environment:
+      - REDIS_URL=redis://cache
+      - NODE_ENV=development
+      - PORT=3000
+    command:
+      sh -c 'npm i && node server-get.js'
+  nginx:
+    build: ./nginx
+    links:
+      - app-set
+      - app-get
+    ports:
+      - 3000:80

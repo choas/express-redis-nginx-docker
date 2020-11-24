@@ -1,0 +1,21 @@
+{
+  "name": "express-redis-nginx-docker",
+  "version": "1.0.0",
+  "description": "docker-compose example with express, redis and nginx",
+  "main": "server-set.js",
+  "scripts": {
+    "start": "node server-set.js"
+  },
+  "keywords": [],
+  "author": "Lars Gregori",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/choas/express-redis-nginx-docker.git"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "redis": "^3.0.2"
+  }
+}
