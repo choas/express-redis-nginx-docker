@@ -5,38 +5,38 @@ services:
     container_name: cache
     expose:
       - 6379
+    mem_limit: 4m
   app-set:
-    build: ./
-    volumes:
-      - ./:/var/www/app
+    image: choas/express-redis-nginx:express
     links:
       - redis
     expose:
       - 3000
+    mem_limit: 16m
     environment:
       - REDIS_URL=redis://cache
       - NODE_ENV=development
       - PORT=3000
     command:
-      sh -c 'npm i && node server-set.js'
+      sh -c 'node server-set.js'
   app-get:
-    build: ./
-    volumes:
-      - ./:/var/www/app
+    image: choas/express-redis-nginx:express
     links:
       - redis
     expose:
       - 3000
+    mem_limit: 16m
     environment:
       - REDIS_URL=redis://cache
       - NODE_ENV=development
       - PORT=3000
     command:
-      sh -c 'npm i && node server-get.js'
+      sh -c 'node server-get.js'
   nginx:
-    build: ./nginx
+    image: choas/express-redis-nginx:nginx
     links:
       - app-set
       - app-get
     ports:
       - 3000:80
+    mem_limit: 4m
